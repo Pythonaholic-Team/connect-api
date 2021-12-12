@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'connect'
     
 ]
 
