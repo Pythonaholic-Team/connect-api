@@ -1,28 +1,27 @@
-from django.shortcuts import render
-# from rest_framework import generics, status, views, permissions
-from .serializers import RegisterSerializer
-# from rest_framework.response import Response
-# from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import RegisterSerializer,LoginSerializer
 from .models import User
-# from rest_framework.views import APIView
-import jwt
-# from django.conf import settings
-
-from django.http import HttpResponsePermanentRedirect
-import os
-from rest_framework.generics import (
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
-
-class CustomRedirect(HttpResponsePermanentRedirect):
-
-    allowed_schemes = [os.environ.get('APP_SCHEME'), 'http', 'https']
+from .serializers import MyTokenObtainPairSerializer
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
 
 
-class RegisterView(ListCreateAPIView):
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
+
+
+
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
+    permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+
+class LoginView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = LoginSerializer
 
 
 
