@@ -1,11 +1,15 @@
 from django.shortcuts import render
-from .models import Post, Offer
+from .models import Post, Offer, Comment
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
-from .permissions import IsOwnerOrReadOnly,OfferIsOwnerOrReadOnly
-from .serializers import PostSerializer, OfferSerializer
+from .permissions import (
+    IsOwnerOrReadOnly,
+    OfferIsOwnerOrReadOnly,
+    CommentIsOwnerOrReadOnly,
+)
+from .serializers import PostSerializer, OfferSerializer, CommentSerializer
 
 
 class PostViewsList(ListCreateAPIView):
@@ -28,3 +32,14 @@ class OfferDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = (OfferIsOwnerOrReadOnly,)
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
+
+
+class CommentViewsList(ListCreateAPIView):
+    queryset = Comment.objects.all().order_by("-created_at")
+    serializer_class = CommentSerializer
+
+
+class CommentDetail(RetrieveUpdateDestroyAPIView):
+    permission_classes = (CommentIsOwnerOrReadOnly,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
