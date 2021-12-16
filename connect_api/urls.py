@@ -1,4 +1,4 @@
-"""connect_api URL Configuration
+"""coonect_api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -14,17 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include 
+from django.urls import path,include
 from rest_framework_simplejwt import views as jwt_views
 from .views import MyTokenObtainPairCustomView
 from django.conf import settings
 from django.conf.urls.static import static
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-     path('api/v1/connect/', include('connect.urls')),
-     path("api-auth/", include("rest_framework.urls")),
+    path('api/vi/connect/', include('connect.urls')),
+    path("api-auth/", include("rest_framework.urls")),
     path(
         "api/token/",
         MyTokenObtainPairCustomView.as_view(),
@@ -35,6 +34,7 @@ urlpatterns = [
         jwt_views.TokenRefreshView.as_view(),
         name="token_refresh",
     ),
-]
+    
 
+]
 urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

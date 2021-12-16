@@ -11,12 +11,13 @@ class Post(models.Model):
 
 
 class Offer(models.Model):
-    owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner_id = models.ForeignKey(User , on_delete=models.CASCADE)
     to_company = models.ManyToManyField(User, related_name="companies")
-    created_at = models.DateTimeField(default=timezone.now)
-    title = models.CharField(max_length=255, default=True, blank=True)
+    created_at = models.DateTimeField(default = timezone.now)
+    title = models.CharField(max_length=255, default="title", blank=True)
     description = models.TextField()
     price = models.FloatField()
+    status = models.CharField(max_length=32, default="pending", blank=True)
 
 
 class Comment(models.Model):
@@ -24,3 +25,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     on_post = models.ManyToManyField(Post, related_name="comments")
+
+
+class Activity(models.Model):
+    user = models.ForeignKey(User , on_delete=models.CASCADE)
+    post = models.ManyToManyField(Post, related_name="post")
+    type_of_activity = models.CharField(max_length=32,default=None, blank = True)
+    created_at = models.DateTimeField(default = timezone.now)
