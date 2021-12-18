@@ -6,6 +6,8 @@ from .views import (
     OfferDetail,
     CommentViewsList,
     CommentDetail,
+    ActivityViewsList,
+    ActivityDetail
 )
 
 urlpatterns = [
@@ -18,5 +20,11 @@ urlpatterns = [
         "comment/<int:pk>/comment_detail/",
         CommentDetail.as_view(),
         name="comment_detail",
+    ),
+    path("activity", ActivityViewsList.as_view(), name="activity"),
+    path(
+        "activity/<int:pk>/activity_detail/",
+        ActivityDetail.as_view(),
+        name="activity_detail",
     ),
 ]
