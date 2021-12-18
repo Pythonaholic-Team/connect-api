@@ -182,6 +182,6 @@ MEDIA_URL = "/photos/"
 CORS_ORIGIN_WHITELIST = tuple(env.list("ALLOWED_ORIGINS"))
 
 CORS_ALLOW_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['https://connect-api-401.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://conect-api-288.herokuapp.com']
 
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(seconds=60 * 60)}
