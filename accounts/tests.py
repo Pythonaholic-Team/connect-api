@@ -1,12 +1,39 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from .models import User
+from .models import User ,UserManager
 from django.urls import reverse
+from rest_framework.test import APIRequestFactory
+from .serializers import LoginSerializer
+import requests
+# import pyjwt
 
+def getToken():
+  url="http://localhost:8000/api/token/"
+  response=requests.post(url,json={"email":"adham@gmail.com","password":"adham123"})
+  tokens=response.json()
+  return tokens.get("access")
+
+factory = APIRequestFactory()
 class BlogTest(TestCase):
 
     def setUp(self):
-      self.user = get_user_model().objects.create_user(
+      self.user = User.objects.create_user(
+    country = "jordan",
+    username = "ash",
+    email = "adham@gmail.com",
+    first_name ="ash",
+    last_name = "adham",
+    is_verified = True,
+    is_active = True,
+    is_staff = True,
+
+    date_joined = "12/12/1212",
+    
+    last_login = "12/12/1212",
+    auth_provider = "facebook",
+        )
+    def setUp(self):
+      self.user = User.objects.create_user(
     country = "jordan",
     username = "ash",
     email = "adham@gmail.com",
@@ -36,53 +63,27 @@ class BlogTest(TestCase):
 
 #    ###########################
 
-    def test_blog_list_view(self):
-        response = self.client.get(reverse('register'))
-        self.assertEqual(response.status_code, 200)
+    def test_accounts_app(self):
+        user={
+    "email": "adham@gmail.com",
+    "password":"adham123",
+    "username": "14dsd34",
+    "is_company": "True",
+    "phone_number": "False",
+    "country": "False"
+  
+        }
+        access=getToken()
+        resp=requests.get("http://localhost:8000/register/",headers={"Authorization":"Bearer " +access})
+        resp6=requests.post("http://localhost:8000/register/",json={"email":"adham@gmail.com","password":"adham123"},headers={"Authorization":"Bearer " +access})
+        resp2=requests.get("http://localhost:8000/register/1",headers={"Authorization":"Bearer " +access})        # response = self.client.get(reverse('register'))
+        resp3=requests.post("http://localhost:8000/login/",json=user ,headers={"Authorization":"Bearer " +access})  
+       
+       
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp2.status_code, 200)
+        self.assertEqual(resp3.status_code,200)
+        self.assertEqual(resp6.status_code,400)
 
-    def test_blog_details_view(self):
-        response = self.client.get(reverse('register_return', args="1"))
-        self.assertEqual(response.status_code, 200)
 
-
-
-#         ####### 
-
-        
-    def test_blog_update_view(self):
-        response = self.client.get(reverse('register_return', args=('1')), {
-            "email": "adham@gmail.com",
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'adham@gmail.com')
-
-#     ############
- 
-    def test_home_status(self):
-        expected = 200
-        url = reverse('register')
-        response = self.client.get(url)
-        actual = response.status_code 
-        self.assertEquals(expected,actual)
-        
-
-    
-#    ################
-
-    def test_create_view(self):
-        response = self.client.get(reverse('register'), {
-            "id": 1,
-            "email": "adham@gmail.com",
-            "username": "adham",
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 1)
-        # self.assertContains(response, 'adham@gmail.com')
-        self.assertContains(response, 'adham')
-
-    def test_delete_view(self):
-        response = self.client.get(reverse('register_return', args='1'))
-        self.assertEqual(response.status_code, 200)
-    
-    
-    
+   
