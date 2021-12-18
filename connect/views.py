@@ -4,6 +4,8 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
+
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from .permissions import (
     IsOwnerOrReadOnly,
     OfferIsOwnerOrReadOnly,
@@ -14,12 +16,12 @@ from .serializers import PostSerializer, OfferSerializer, CommentSerializer,Acti
 
 
 class PostViewsList(ListCreateAPIView):
-    queryset = Post.objects.all().order_by("created_at")
+    queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
 
 
 class PostDetail(RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -30,7 +32,7 @@ class OfferViewsList(ListCreateAPIView):
 
 
 class OfferDetail(RetrieveUpdateDestroyAPIView):
-    permission_classes = (OfferIsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
